@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:resources="clr-namespace:Veeb.Resources;assembly=Veeb"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Veeb.Views.MetronomTabPage"
+             Title="Metronome"
+             BackgroundColor="#e4dbd9"
+             IconImageSource="metronom_icon.png">
+
+    <ScrollView>
+        <StackLayout>
+            <Grid HeightRequest="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
+                       Grid.Column="0"
+                       Margin="15"/>
+                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
+                       Grid.Column="1"
+                       Margin="15"/>
+                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
+                       Grid.Column="2"
+                       Margin="15"/>
+                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
+                       Grid.Column="3"
+                       Margin="15"/>
+            </Grid>
+            <Label Text="Alegro"
+                   HorizontalTextAlignment="Center"
+                   FontSize="20"
+                   TextColor="#2f4c58"
+                   WidthRequest="50"/>
+            <Grid HeightRequest="70">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ImageButton Source="minus_1_icon.png"
+                             Grid.Column="0"
+                             Margin="25"
+                             BackgroundColor="#e4dbd9"
+                             Command="{Binding MinusOneBpmBatton}"/>
+                <Entry Grid.Column="1"
+                       Grid.ColumnSpan="2"
+                       Margin="25,0,25,0"
+                       HorizontalTextAlignment="Center"
+                       ReturnCommand="{Binding EntryReturnCommand}"
+                       Unfocused="OnUnfocused"
+                       Text="{Binding BpmTextEntry, Mode=TwoWay}"
+                       TextColor="#6e93d6"
+                       FontSize="40"
+                       Keyboard="Numeric"
+                       MaxLength="3"/>
+                <ImageButton Source="plus_1_icon.png"
+                             Grid.Column="3"
+                             Margin="25"
+                             BackgroundColor="#e4dbd9"
+                             Command="{Binding PlusOneBpmButton}"/>
+            </Grid>
+            <Grid HeightRequest="40">
+                <Slider Margin="5, 0, 5, 0"
+                        Value="{Binding Bpm, Mode=TwoWay}"
+                        MinimumTrackColor="#6e93d6"
+                        MaximumTrackColor="#c3c3c3"
+                        Maximum="300"
+                        Minimum="10"/>
+            </Grid>
+            <Button Text="{Binding TextStartAndStopMetronomeButton}" 
+                    TextColor="#e4dbd9" 
+                    BackgroundColor="{Binding BackgroundColorStartAndStopMetronomeButton}"
+                    CornerRadius="20"
+                    Margin="10, 5, 10, 5"
+                    Command="{Binding StartAndStopMetronomeButton}"/>
+            <Grid HeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Text="{Binding TextOnAndOffSoundButton}" 
+                        TextColor="#e4dbd9" 
+                        BackgroundColor="{Binding BackgroundColorOnAndOffSoundButton}"
+                        CornerRadius="20"
+                        Margin="10, 5, 5, 5"
+                        ImageSource="sound_icon.png"
+                        Command="{Binding OnAndOffSoundButton}"
+                        Grid.Column="0"/>
+                <Button Text="{Binding TextOnAndOffVibrationButton}" 
+                        TextColor="#e4dbd9" 
+                        BackgroundColor="{Binding BackgroundColorOnAndOffVibrationButton}"
+                        CornerRadius="20"
+                        Margin="5, 5, 10, 5"
+                        ImageSource="vibration_icon.png"
+                        Command="{Binding OnAndOffVibrationButton}"
+                        Grid.Column="1"/>
+            </Grid>
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

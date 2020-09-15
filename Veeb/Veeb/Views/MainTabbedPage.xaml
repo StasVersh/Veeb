@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:prism="http://prismlibrary.com"
+            xmlns:local="clr-namespace:Veeb.Views"
+            prism:ViewModelLocator.AutowireViewModel="True"
+            x:Class="Veeb.Views.MainTabbedPage"
+            BarBackgroundColor="#e4dbd9"
+            NavigationPage.HasNavigationBar="false"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            android:TabbedPage.BarItemColor="#2f4c58"
+            android:TabbedPage.BarSelectedItemColor="#6e93d6">
+
+    <TabbedPage.Children>
+        <local:MetronomTabPage/>
+        <local:SettingsTabPage/>
+    </TabbedPage.Children>
+
+</TabbedPage>
