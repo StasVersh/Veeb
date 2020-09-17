@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SelectedDevice>oreo_8_1_-_api_27</SelectedDevice>
+    <SelectedDevice>pixel_3a_xl</SelectedDevice>
     <AndroidDesignerPreferredTheme>Theme.AppCompat.Light.NoActionBar</AndroidDesignerPreferredTheme>
-    <DefaultDevice>oreo_8_1_-_api_27</DefaultDevice>
+    <DefaultDevice>pixel_3a_xl</DefaultDevice>
   </PropertyGroup>
 </Project>

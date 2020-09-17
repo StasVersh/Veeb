@@ -1,12 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Windows.Input;
 using Veeb.Models;
+using Veeb.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Color = System.Drawing.Color;
@@ -21,6 +18,7 @@ namespace Veeb.ViewModels
         private bool start_or_stop_metronome_button = false;
         private bool on_or_off_sound_button = false;
         private bool on_or_off_vibration_button = false;
+        private int sheare = 0;
         private State state;
         #endregion
 
@@ -30,15 +28,13 @@ namespace Veeb.ViewModels
             get => bpm.ToString("###");
             set
             {
-                if (double.TryParse(value, out double bpm) && bpm > 9 && bpm < 301)
+                if (double.TryParse(value, out double bpm))
                 {
                     Bpm = bpm;
                 }
-
                 RaisePropertyChanged(nameof(BpmTextEntry));
             }
         }
-
         public double Bpm
         {
             get => bpm;
@@ -68,34 +64,62 @@ namespace Veeb.ViewModels
             set => SetProperty(ref _textOnAndOffVibrationButton, value);
         }
         #endregion
-        
-        //Colors
-        private Color _backgroundColorStartAndStopMetronomeButton = Color.FromArgb(110, 147, 214);
+
+        #region Colors
+        private Color _backgroundColorStartAndStopMetronomeButton = Colors.Passive;
         public Color BackgroundColorStartAndStopMetronomeButton
         {
             get => _backgroundColorStartAndStopMetronomeButton;
             set => SetProperty(ref _backgroundColorStartAndStopMetronomeButton, value);
         }
-        private Color _backgroundColorOnAndOffSoundButton = Color.FromArgb(110, 147, 214);  
+        private Color _backgroundColorOnAndOffSoundButton = Colors.Passive;
         public Color BackgroundColorOnAndOffSoundButton
         {
             get => _backgroundColorOnAndOffSoundButton;
             set => SetProperty(ref _backgroundColorOnAndOffSoundButton, value);
         }
-        private Color _backgroundColorOnAndOffVibrationButton = Color.FromArgb(110, 147, 214);
+        private Color _backgroundColorOnAndOffVibrationButton = Colors.Passive;
         public Color BackgroundColorOnAndOffVibrationButton
         {
             get => _backgroundColorOnAndOffVibrationButton;
             set => SetProperty(ref _backgroundColorOnAndOffVibrationButton, value);
         }
+        #endregion
 
-        //Buttons
+        #region Icons
+        private string _roundIconOne = Icons.GrayRoundIcon;
+        public string RoundIconOne
+        {
+            get => _roundIconOne;
+            set => SetProperty(ref _roundIconOne, value);
+        }
+        private string _roundIconTwo = Icons.GrayRoundIcon;
+        public string RoundIconTwo
+        {
+            get => _roundIconTwo;
+            set => SetProperty(ref _roundIconTwo, value);
+        }
+        private string _roundIconThree = Icons.GrayRoundIcon;
+        public string RoundIconThree
+        {
+            get => _roundIconThree;
+            set => SetProperty(ref _roundIconThree, value);
+        }
+        private string _roundIconFour = Icons.GrayRoundIcon;
+        public string RoundIconFour
+        {
+            get => _roundIconFour;
+            set => SetProperty(ref _roundIconFour, value);
+        }
+        #endregion
+
         public ICommand MinusOneBpmBatton { get; }
         public ICommand PlusOneBpmButton { get; }
         public ICommand StartAndStopMetronomeButton { get; }
         public ICommand OnAndOffSoundButton { get; }
         public ICommand OnAndOffVibrationButton { get; }
         public ICommand EntryReturnCommand { get; }
+
 
         public MetronomTabPageViewModel()
         {
@@ -106,19 +130,34 @@ namespace Veeb.ViewModels
             OnAndOffVibrationButton = new DelegateCommand(onAndOffVibrationButton);
             EntryReturnCommand = new DelegateCommand(entryReturnCommand);
         }
-
-        private void minusOneBpmBatton() { bpm--; }
-        private void plusOneBpmButton() { bpm++; }
+        private void minusOneBpmBatton() { Bpm--; }
+        private void plusOneBpmButton() { Bpm++; }
         private void startAndStopMetronomeButton()
         {
-            if(start_or_stop_metronome_button == false)
+            if(!start_or_stop_metronome_button)
             {
-                Tick();
-                MetronomeTimer();              
+                BackgroundColorStartAndStopMetronomeButton = Colors.Active;
+                TextStartAndStopMetronomeButton = "Stop";
+                start_or_stop_metronome_button = true;
+                if (Bpm > 300) Bpm = 300;
+                if (Bpm < 10) Bpm = 10;
+                fromSecender = 1 / (Bpm / 60);
+                if (on_or_off_vibration_button == true)
+                {
+                    double timeSpan;
+                    if ((fromSecender / 3) > (0.5 / 3)) timeSpan = 0.5 / 3;
+                    else timeSpan = fromSecender / 3;
+                    var duration = TimeSpan.FromSeconds(timeSpan);
+                    Vibration.Vibrate(duration);
+                }
+                RoundIconOne = "green_round_icon.png";
+                sheare = 1;
+                if (on_or_off_sound_button == true) DependencyService.Get<IAudioService>().PlayAudioFile("tic_1_sound.mp3");
+                MetronomeTimer();
             }
             else
             {
-                BackgroundColorStartAndStopMetronomeButton = Color.FromArgb(110, 147, 214);
+                BackgroundColorStartAndStopMetronomeButton = Colors.Passive;
                 TextStartAndStopMetronomeButton = "Start";
                 start_or_stop_metronome_button = false;
             }
@@ -127,13 +166,13 @@ namespace Veeb.ViewModels
         {
             if(!on_or_off_sound_button)
             {
-                BackgroundColorOnAndOffSoundButton = Color.FromArgb(99, 165, 131);
+                BackgroundColorOnAndOffSoundButton = Colors.Active;
                 on_or_off_sound_button = true;
                 TextOnAndOffSoundButton = "On";
             }
             else
             {
-                BackgroundColorOnAndOffSoundButton = Color.FromArgb(110, 147, 214);
+                BackgroundColorOnAndOffSoundButton = Colors.Passive;
                 on_or_off_sound_button = false;
                 TextOnAndOffSoundButton = "Off";
             }
@@ -142,13 +181,13 @@ namespace Veeb.ViewModels
         {
             if(!on_or_off_vibration_button)
             {
-                BackgroundColorOnAndOffVibrationButton = Color.FromArgb(99, 165, 131);
+                BackgroundColorOnAndOffVibrationButton = Colors.Active;
                 on_or_off_vibration_button = true;
                 TextOnAndOffVibrationButton = "On";
             }
             else
             {
-                BackgroundColorOnAndOffVibrationButton = Color.FromArgb(110, 147, 214);
+                BackgroundColorOnAndOffVibrationButton = Colors.Passive;
                 on_or_off_vibration_button = false;
                 TextOnAndOffVibrationButton = "Off";
             }
@@ -156,60 +195,67 @@ namespace Veeb.ViewModels
 
         private void entryReturnCommand()
         {
-            
+            if (Bpm < 10) Bpm = 10;
+            if (Bpm > 300) Bpm = 300;
         }
 
         private void MetronomeTimer()
         {
-            Device.StartTimer(TimeSpan.FromSeconds(fromSecender), Tick);
-        }
-
-        private bool Tick()
-        {
-            if (start_or_stop_metronome_button == false)
-            {
-                state = State.None;
-            }
-            else
-            {
-                state = state == State.Fourth ? State.First : ++state;
-            }
-
-            //Vibration
-            if (on_or_off_vibration_button)
-            {
-                try
-                {
-                    if (start_or_stop_metronome_button)
-                    {
-                        Vibration.Cancel();
-                        double timeSpan;
-                        if ((fromSecender / 3) > (0.5 / 3)) timeSpan = 0.5 / 3;
-                        else timeSpan = fromSecender / 3;
-                        var duration2 = TimeSpan.FromSeconds(timeSpan);
-                        fromSecender = 1 / (bpm / 60);
-                        Vibration.Vibrate(duration2);
-                    }
-                }
-                catch (FeatureNotSupportedException ex)
-                {
-                    TextStartAndStopMetronomeButton = "function does not work";
-                }
-                catch (Exception ex)
-                {
-                    TextStartAndStopMetronomeButton = "error";
-                }
-            }
-
-            //Sound
-            if (on_or_off_sound_button)
+            Device.StartTimer(TimeSpan.FromSeconds(fromSecender), () =>
             {
                 if (start_or_stop_metronome_button)
                 {
-                    DependencyService.Get<IAudioService>().PlayAudioFile("tic_1_sound.mp3");
+                    if (sheare == 0) RoundIconOne = Icons.GreenRoundIcon;
+                    else RoundIconOne = Icons.GrayRoundIcon;
+                    if (sheare == 1) RoundIconTwo = Icons.BlueRoundIcon;
+                    else RoundIconTwo = Icons.GrayRoundIcon;
+                    if (sheare == 2) RoundIconThree = Icons.GreenRoundIcon;
+                    else RoundIconThree = Icons.GrayRoundIcon;
+                    if (sheare == 3) RoundIconFour = Icons.BlueRoundIcon;
+                    else RoundIconFour = Icons.GrayRoundIcon;
+                    sheare++;
+                    if (sheare == 4) sheare = 0;                   
                 }
-            }
-            return start_or_stop_metronome_button;
+                else
+                {
+                    RoundIconOne = Icons.GrayRoundIcon;
+                    RoundIconTwo = Icons.GrayRoundIcon;
+                    RoundIconThree = Icons.GrayRoundIcon;
+                    RoundIconFour = Icons.GrayRoundIcon;
+                }
+                fromSecender = 1 / (Bpm / 60);
+                if (on_or_off_vibration_button)
+                {
+                    try
+                    {
+                        if (start_or_stop_metronome_button)
+                        {
+                            Vibration.Cancel();
+                            double timeSpan;
+                            if ((fromSecender / 3) > (0.5 / 3)) timeSpan = 0.5 / 3;
+                            else timeSpan = fromSecender / 3;
+                            var duration2 = TimeSpan.FromSeconds(timeSpan);
+                            Vibration.Vibrate(duration2);
+                        }
+                    }
+                    catch (FeatureNotSupportedException ex)
+                    {
+                        TextStartAndStopMetronomeButton = "function does not work";
+                    }
+                    catch (Exception ex)
+                    {
+                        TextStartAndStopMetronomeButton = "error";
+                    }
+                }
+                if (on_or_off_sound_button)
+                {
+                    if (start_or_stop_metronome_button)
+                    {
+                        DependencyService.Get<IAudioService>().PlayAudioFile("tic_1_sound.mp3");
+                    }
+                }
+                return start_or_stop_metronome_button;
+            });
         }
     }
 }
