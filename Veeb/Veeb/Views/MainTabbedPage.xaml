@@ -6,7 +6,6 @@
             prism:ViewModelLocator.AutowireViewModel="True"
             x:Class="Veeb.Views.MainTabbedPage"
             BarBackgroundColor="#e4dbd9"
-            NavigationPage.HasNavigationBar="false"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.ToolbarPlacement="Bottom"
             android:TabbedPage.BarItemColor="#2f4c58"
@@ -16,5 +15,9 @@
         <local:MetronomTabPage/>
         <local:SettingsTabPage/>
     </TabbedPage.Children>
+
+    <NavigationPage.TitleView>
+        <Label Text="Veeb" TextColor="#6e93d6" FontSize="Title" FontAttributes="Bold"/>
+    </NavigationPage.TitleView>
 
 </TabbedPage>

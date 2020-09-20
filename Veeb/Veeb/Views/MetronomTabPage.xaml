@@ -9,6 +9,16 @@
              BackgroundColor="{x:Static resources:Colors.BackgroundColor}"
              IconImageSource="metronom_icon.png">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStandart" TargetType="Button">
+                <Setter Property="TextColor" Value="{x:Static resources:Colors.LightTextColor}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="20" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <StackLayout>
             <Grid HeightRequest="100">
@@ -54,12 +64,12 @@
                        HorizontalTextAlignment="Center"
                        ReturnCommand="{Binding EntryReturnCommand}"
                        Unfocused="OnUnfocused"
-                       Text="{Binding BpmTextEntry, Mode=TwoWay}"
+                       Text="{Binding BpmTextEntry}"
                        TextColor="{x:Static resources:Colors.Passive}"
                        FontSize="40"
                        Keyboard="Numeric"
                        MaxLength="3"/>
-                <ImageButton Source="plus_1_icon.png"
+                <ImageButton Source="plus_1_icon.png"                                                                                                                    
                              Grid.Column="3"
                              Margin="25"
                              BackgroundColor="{x:Static resources:Colors.BackgroundColor}"
@@ -67,16 +77,22 @@
             </Grid>
             <Grid HeightRequest="40">
                 <Slider Margin="5, 0, 5, 0"
-                        Value="{Binding Bpm, Mode=TwoWay}"
+                        Value="{Binding Bpm}"
                         MinimumTrackColor="{x:Static resources:Colors.Passive}"
                         MaximumTrackColor="{x:Static resources:Colors.OffColor}"
                         Maximum="300"
                         Minimum="10"/>
             </Grid>
+            <Button Text="{Binding TapingTempoButtonText}" 
+                    Style="{StaticResource ButtonStandart}"
+                    BackgroundColor="{x:Static resources:Colors.Passive}"
+                    Margin="10, 5, 10, 5"
+                    ImageSource="tap_icon.png"
+                    Command="{Binding TapingTempoButton}"/>
             <Button Text="{Binding TextStartAndStopMetronomeButton}" 
-                    TextColor="{x:Static resources:Colors.LightTextColor}" 
+                    Style="{StaticResource ButtonStandart}"
                     BackgroundColor="{Binding BackgroundColorStartAndStopMetronomeButton}"
-                    CornerRadius="20"
+                    ImageSource="{Binding StartAndStopMetronomeButtonIcon}"
                     Margin="10, 5, 10, 5"
                     Command="{Binding StartAndStopMetronomeButton}"/>
             <Grid HeightRequest="60">
@@ -85,17 +101,15 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Text="{Binding TextOnAndOffSoundButton}" 
-                        TextColor="{x:Static resources:Colors.LightTextColor}" 
+                        Style="{StaticResource ButtonStandart}"
                         BackgroundColor="{Binding BackgroundColorOnAndOffSoundButton}"
-                        CornerRadius="20"
                         Margin="10, 5, 5, 5"
                         ImageSource="sound_icon.png"
                         Command="{Binding OnAndOffSoundButton}"
                         Grid.Column="0"/>
                 <Button Text="{Binding TextOnAndOffVibrationButton}" 
-                        TextColor="{x:Static resources:Colors.LightTextColor}" 
+                        Style="{StaticResource ButtonStandart}"
                         BackgroundColor="{Binding BackgroundColorOnAndOffVibrationButton}"
-                        CornerRadius="20"
                         Margin="5, 5, 10, 5"
                         ImageSource="vibration_icon.png"
                         Command="{Binding OnAndOffVibrationButton}"

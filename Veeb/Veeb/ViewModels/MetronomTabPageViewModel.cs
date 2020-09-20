@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Input;
 using Veeb.Models;
 using Veeb.Resources;
@@ -15,11 +17,15 @@ namespace Veeb.ViewModels
         #region Vars
         private double bpm = 120;
         private double fromSecender;
+        private TimeSpan timeSpan;
         private bool start_or_stop_metronome_button = false;
         private bool on_or_off_sound_button = false;
         private bool on_or_off_vibration_button = false;
+        private bool startAndStopTapingTempo = false; 
+        private bool OnOrOffButtonTapingTempo = false;
         private int sheare = 0;
         private State state;
+        Stopwatch stopWatch = new Stopwatch();
         #endregion
 
         #region Strings
@@ -62,6 +68,12 @@ namespace Veeb.ViewModels
         {
             get => _textOnAndOffVibrationButton;
             set => SetProperty(ref _textOnAndOffVibrationButton, value);
+        }
+        private string _tapingTempoButtonText = "Taping Tempo";
+        public string TapingTempoButtonText
+        {
+            get => _tapingTempoButtonText;
+            set => SetProperty(ref _tapingTempoButtonText, value);
         }
         #endregion
 
@@ -111,6 +123,12 @@ namespace Veeb.ViewModels
             get => _roundIconFour;
             set => SetProperty(ref _roundIconFour, value);
         }
+        private string _startAndStopMetronomeButtonIcon = Icons.PlayIcon;
+        public string StartAndStopMetronomeButtonIcon
+        {
+            get => _startAndStopMetronomeButtonIcon;
+            set => SetProperty(ref _startAndStopMetronomeButtonIcon, value);
+        }
         #endregion
 
         public ICommand MinusOneBpmBatton { get; }
@@ -119,6 +137,7 @@ namespace Veeb.ViewModels
         public ICommand OnAndOffSoundButton { get; }
         public ICommand OnAndOffVibrationButton { get; }
         public ICommand EntryReturnCommand { get; }
+        public ICommand TapingTempoButton { get; }
 
 
         public MetronomTabPageViewModel()
@@ -129,6 +148,7 @@ namespace Veeb.ViewModels
             OnAndOffSoundButton = new DelegateCommand(onAndOffSoundButton);
             OnAndOffVibrationButton = new DelegateCommand(onAndOffVibrationButton);
             EntryReturnCommand = new DelegateCommand(entryReturnCommand);
+            TapingTempoButton = new DelegateCommand(tapingTempoButton);
         }
         private void minusOneBpmBatton() { Bpm--; }
         private void plusOneBpmButton() { Bpm++; }
@@ -139,6 +159,7 @@ namespace Veeb.ViewModels
                 BackgroundColorStartAndStopMetronomeButton = Colors.Active;
                 TextStartAndStopMetronomeButton = "Stop";
                 start_or_stop_metronome_button = true;
+                StartAndStopMetronomeButtonIcon = Icons.StopIcon;
                 if (Bpm > 300) Bpm = 300;
                 if (Bpm < 10) Bpm = 10;
                 fromSecender = 1 / (Bpm / 60);
@@ -160,6 +181,7 @@ namespace Veeb.ViewModels
                 BackgroundColorStartAndStopMetronomeButton = Colors.Passive;
                 TextStartAndStopMetronomeButton = "Start";
                 start_or_stop_metronome_button = false;
+                StartAndStopMetronomeButtonIcon = Icons.PlayIcon;
             }
         }
         private void onAndOffSoundButton()
@@ -197,6 +219,23 @@ namespace Veeb.ViewModels
         {
             if (Bpm < 10) Bpm = 10;
             if (Bpm > 300) Bpm = 300;
+        }
+
+        private void tapingTempoButton()
+        {
+            if(!startAndStopTapingTempo)
+            {
+                
+            }
+            //else
+            //{
+            //    stopWatch.Stop();
+            //    timeSpan = stopWatch.Elapsed;
+            //    fromSecender = timeSpan.TotalSeconds;
+            //    Bpm = 60 / fromSecender;
+            //    stopWatch.Reset();
+            //    startAndStopTapingTempo = false;
+            //}
         }
 
         private void MetronomeTimer()

@@ -11,8 +11,8 @@ namespace Veeb.Views
 
         private void OnUnfocused(object sender, FocusEventArgs e)
         {
-            var entry = sender as Entry;
-            entry?.ReturnCommand.Execute(entry.ReturnCommandParameter);
+            //var entry = sender as Entry;
+            //entry?.ReturnCommand.Execute(entry.ReturnCommandParameter);
         }
     }
 }
