@@ -49,6 +49,12 @@ namespace Veeb.ViewModels
             }
         }
 
+        public State State
+        {
+            get => state;
+            set => SetProperty(ref state, value);
+        }
+
         private string _textStartAndStopMetronomeButton = "Start";
         public string TextStartAndStopMetronomeButton
         {
@@ -166,13 +172,13 @@ namespace Veeb.ViewModels
 
         private bool Tick()
         {
-            if (start_or_stop_metronome_button == false)
+            //if (start_or_stop_metronome_button == false)
+            //{
+            //    State = State.None;
+            //}
+            //else
             {
-                state = State.None;
-            }
-            else
-            {
-                state = state == State.Fourth ? State.First : ++state;
+                State = state == State.Fourth ? State.First : (State)((int)state+1);
             }
 
             //Vibration
@@ -209,7 +215,7 @@ namespace Veeb.ViewModels
                     DependencyService.Get<IAudioService>().PlayAudioFile("tic_1_sound.mp3");
                 }
             }
-            return start_or_stop_metronome_button;
+            return true;
         }
     }
 }

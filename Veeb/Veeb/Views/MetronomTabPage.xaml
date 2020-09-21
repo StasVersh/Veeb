@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              xmlns:resources="clr-namespace:Veeb.Resources;assembly=Veeb"
+             xmlns:controls="clr-namespace:Veeb.Views.Controls;assembly=Veeb"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Veeb.Views.MetronomTabPage"
              Title="Metronome"
-             BackgroundColor="#e4dbd9"
+             BackgroundColor="{x:Static resources:Colors.BackgroundColor}"
              IconImageSource="metronom_icon.png">
 
     <ScrollView>
@@ -18,18 +19,18 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
-                       Grid.Column="0"
-                       Margin="15"/>
-                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
-                       Grid.Column="1"
-                       Margin="15"/>
-                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
-                       Grid.Column="2"
-                       Margin="15"/>
-                <Image Source="{x:Static resources:Icons.GrayRoundIcon}"
-                       Grid.Column="3"
-                       Margin="15"/>
+                <controls:Circle Grid.Column="0"
+                                 State="First"
+                                 CurrentState="{Binding State}"/>
+                <controls:Circle Grid.Column="1"
+                                 State="Second"
+                                 CurrentState="{Binding State}"/>
+                <controls:Circle Grid.Column="2"
+                                 State="Third"
+                                 CurrentState="{Binding State}"/>
+                <controls:Circle Grid.Column="3"
+                                 State="Fourth"
+                                 CurrentState="{Binding State}"/>
             </Grid>
             <Label Text="Alegro"
                    HorizontalTextAlignment="Center"
@@ -46,7 +47,7 @@
                 <ImageButton Source="minus_1_icon.png"
                              Grid.Column="0"
                              Margin="25"
-                             BackgroundColor="#e4dbd9"
+                             BackgroundColor="{x:Static resources:Colors.BackgroundColor}"
                              Command="{Binding MinusOneBpmBatton}"/>
                 <Entry Grid.Column="1"
                        Grid.ColumnSpan="2"
@@ -55,26 +56,26 @@
                        ReturnCommand="{Binding EntryReturnCommand}"
                        Unfocused="OnUnfocused"
                        Text="{Binding BpmTextEntry, Mode=TwoWay}"
-                       TextColor="#6e93d6"
+                       TextColor="{x:Static resources:Colors.Passive}"
                        FontSize="40"
                        Keyboard="Numeric"
                        MaxLength="3"/>
                 <ImageButton Source="plus_1_icon.png"
                              Grid.Column="3"
                              Margin="25"
-                             BackgroundColor="#e4dbd9"
+                             BackgroundColor="{x:Static resources:Colors.BackgroundColor}"
                              Command="{Binding PlusOneBpmButton}"/>
             </Grid>
             <Grid HeightRequest="40">
                 <Slider Margin="5, 0, 5, 0"
                         Value="{Binding Bpm, Mode=TwoWay}"
-                        MinimumTrackColor="#6e93d6"
-                        MaximumTrackColor="#c3c3c3"
+                        MinimumTrackColor="{x:Static resources:Colors.Passive}"
+                        MaximumTrackColor="{x:Static resources:Colors.OffColor}"
                         Maximum="300"
                         Minimum="10"/>
             </Grid>
             <Button Text="{Binding TextStartAndStopMetronomeButton}" 
-                    TextColor="#e4dbd9" 
+                    TextColor="{x:Static resources:Colors.LightTextColor}" 
                     BackgroundColor="{Binding BackgroundColorStartAndStopMetronomeButton}"
                     CornerRadius="20"
                     Margin="10, 5, 10, 5"
@@ -85,7 +86,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Text="{Binding TextOnAndOffSoundButton}" 
-                        TextColor="#e4dbd9" 
+                        TextColor="{x:Static resources:Colors.LightTextColor}" 
                         BackgroundColor="{Binding BackgroundColorOnAndOffSoundButton}"
                         CornerRadius="20"
                         Margin="10, 5, 5, 5"
@@ -93,7 +94,7 @@
                         Command="{Binding OnAndOffSoundButton}"
                         Grid.Column="0"/>
                 <Button Text="{Binding TextOnAndOffVibrationButton}" 
-                        TextColor="#e4dbd9" 
+                        TextColor="{x:Static resources:Colors.LightTextColor}" 
                         BackgroundColor="{Binding BackgroundColorOnAndOffVibrationButton}"
                         CornerRadius="20"
                         Margin="5, 5, 10, 5"
