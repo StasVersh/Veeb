@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:Veeb.Resources;assembly=Veeb"
+             x:Class="Veeb.Views.Controls.Circle">
+    <ContentView.Content>
+        <Ellipse x:Name="Ellipse"
+                 Fill="{x:Static resources:Colors.OffColor}"
+                 WidthRequest="25"
+                 HeightRequest="25"/>
+    </ContentView.Content>
+</ContentView>
