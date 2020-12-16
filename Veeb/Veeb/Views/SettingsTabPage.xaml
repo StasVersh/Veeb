@@ -7,5 +7,29 @@
              BackgroundColor="#e4dbd9"
              IconImageSource="settings_icon.png"
              Title="Settings">
-  
+
+    <TableView>
+        <TableView.Root>
+            <TableRoot>
+                <TableSection>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Sounds" FontSize="Medium" Padding="10" Grid.Column="0"/>
+                            <Picker Grid.Column="1" Title="Sounds" TextColor="#2f4c58" BackgroundColor="#e4dbd9" TitleColor="#6e93d6">
+                                <Picker.Items>
+                                    <x:String>Defolt</x:String>
+                                    <x:String>Stiks</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </Grid>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView.Root>
+    </TableView>
+
 </ContentPage>

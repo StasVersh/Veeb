@@ -40,7 +40,7 @@ namespace Veeb.Views.Controls
         private static void OnCurrentStatePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             var circle = bindable as Circle;
-            circle.Ellipse.Fill = ((State)newvalue) == circle.State ? Colors.OnColor : Colors.OffColor;
+            //circle.Ellipse.Fill = ((State)newvalue) == circle.State ? Colors.OnColor : Colors.OffColor;
         }
     }
 }
