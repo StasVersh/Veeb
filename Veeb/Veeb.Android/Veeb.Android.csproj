@@ -73,7 +73,6 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioRender.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="SplashActivity.cs" />

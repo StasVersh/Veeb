@@ -17,12 +17,13 @@ namespace Veeb.ViewModels
     {
         #region Vars
         private double bpm = 120;
-        private double fromSecender;
-        private bool start_or_stop_metronome_button = false;
-        private bool on_or_off_sound_button = false;
-        private bool on_or_off_vibration_button = false;
-        private bool startAndStopTapingTempo = false; 
-        private  player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+        private double FromSecender;
+        private bool StartOn = false;
+        private bool SoundOn = false;
+        private bool VibroOn = false;
+        private bool UpdateOn = false;
+        private bool startAndStopTapingTempo = false;
+        public Metronome metronome;
         //private bool OnOrOffButtonTapingTempo = false;
         private int sheare = 0;
         //private State state;
@@ -125,6 +126,7 @@ namespace Veeb.ViewModels
             set => SetProperty(ref _roundIconFour, value);
         }
         private string _startAndStopMetronomeButtonIcon = Icons.PlayIcon;
+
         public string StartAndStopMetronomeButtonIcon
         {
             get => _startAndStopMetronomeButtonIcon;
@@ -141,6 +143,7 @@ namespace Veeb.ViewModels
         public ICommand TapingTempoButton { get; }
 
 
+
         public MetronomTabPageViewModel()
         {
             MinusOneBpmBatton = new DelegateCommand(minusOneBpmBatton);
@@ -149,64 +152,62 @@ namespace Veeb.ViewModels
             OnAndOffSoundButton = new DelegateCommand(onAndOffSoundButton);
             OnAndOffVibrationButton = new DelegateCommand(onAndOffVibrationButton);
             EntryReturnCommand = new DelegateCommand(entryReturnCommand);
-            TapingTempoButton = new DelegateCommand(tapingTempoButton);
+            //TapingTempoButton = new DelegateCommand(tapingTempoButton);
+            metronome = new Metronome();
         }
         private void minusOneBpmBatton() { if(Bpm > 10) Bpm--; }
         private void plusOneBpmButton() { if (Bpm < 300) Bpm++; }
         private void startAndStopMetronomeButton()
         {
-            if(!start_or_stop_metronome_button)
+            if(!StartOn)
             {
                 BackgroundColorStartAndStopMetronomeButton = Colors.Active;
                 TextStartAndStopMetronomeButton = "Stop";
                 StartAndStopMetronomeButtonIcon = Icons.StopIcon;
+                StartOn = true;
                 if (Bpm > 300) Bpm = 300;
                 if (Bpm < 10) Bpm = 10;
-                fromSecender = 60000 / Bpm;
-                TimerTick();             
-                _ = MetronomeTimerAsync();
-                start_or_stop_metronome_button = true;
+                UpdateOn = true;
+                _ = Update();
+                if (metronome != null) metronome.Play();
             }
             else
             {
                 BackgroundColorStartAndStopMetronomeButton = Colors.Passive;
                 TextStartAndStopMetronomeButton = "Start";
-                start_or_stop_metronome_button = false;
+                StartOn = false;
                 StartAndStopMetronomeButtonIcon = Icons.PlayIcon;
-                if (sheare == 0) RoundIconOne = Icons.GrayRoundIcon;
-                if (sheare == 1) RoundIconTwo = Icons.GrayRoundIcon;
-                if (sheare == 2) RoundIconThree = Icons.GrayRoundIcon;
-                if (sheare == 3) RoundIconFour = Icons.GrayRoundIcon;
-                sheare = 0;
+                if (metronome != null) metronome.Stop();
+                UpdateOn = false;
             }
         }
         private void onAndOffSoundButton()
         {
-            if(!on_or_off_sound_button)
+            if(!SoundOn)
             {
                 BackgroundColorOnAndOffSoundButton = Colors.Active;
-                on_or_off_sound_button = true;
+                SoundOn = true;
                 TextOnAndOffSoundButton = "On";
             }
             else
             {
                 BackgroundColorOnAndOffSoundButton = Colors.Passive;
-                on_or_off_sound_button = false;
+                SoundOn = false;
                 TextOnAndOffSoundButton = "Off";
             }
         }
         private void onAndOffVibrationButton()
         {
-            if(!on_or_off_vibration_button)
+            if(!VibroOn)
             {
                 BackgroundColorOnAndOffVibrationButton = Colors.Active;
-                on_or_off_vibration_button = true;
+                VibroOn = true;
                 TextOnAndOffVibrationButton = "On";
             }
             else
             {
                 BackgroundColorOnAndOffVibrationButton = Colors.Passive;
-                on_or_off_vibration_button = false;
+                VibroOn = false;
                 TextOnAndOffVibrationButton = "Off";
             }
         }
@@ -217,112 +218,126 @@ namespace Veeb.ViewModels
             if (Bpm > 300) Bpm = 300;
         }
 
-        private void tapingTempoButton()
+        private async Task Update()
         {
-            if(!startAndStopTapingTempo)
+            while (UpdateOn)
             {
-                
+                await Task.Run(async () =>
+                {
+                    FromSecender = 60000 / Bpm;
+                    if (metronome != null) metronome.Update(FromSecender, SoundOn, VibroOn);
+                    await Task.Delay(250).ConfigureAwait(false);
+
+                });
             }
-            //else
-            //{
-            //    stopWatch.Stop();
-            //    timeSpan = stopWatch.Elapsed;
-            //    fromSecender = timeSpan.TotalSeconds;
-            //    Bpm = 60 / fromSecender;
-            //    stopWatch.Reset();
-            //    startAndStopTapingTempo = false;
-            //}
         }
 
-        private async Task MetronomeTimerAsync()
-        {
-            await Task.Run(async () =>
-            {
-                await Task.Delay((int)fromSecender).ConfigureAwait(false);
-                TimerTick();
+        //private void tapingTempoButton()
+        //{
+        //    if(!startAndStopTapingTempo)
+        //    {
 
-            });
+        //    }
+        //    //else
+        //    //{
+        //    //    stopWatch.Stop();
+        //    //    timeSpan = stopWatch.Elapsed;
+        //    //    fromSecender = timeSpan.TotalSeconds;
+        //    //    Bpm = 60 / fromSecender;
+        //    //    stopWatch.Reset();
+        //    //    startAndStopTapingTempo = false;
+        //    //}
+        //}
 
-        }
+        //private async Task MetronomeTimerAsync()
+        //{
+        //    await Task.Run(async () =>
+        //    {
+        //        await Task.Delay((int)fromSecender).ConfigureAwait(false);
+        //        TimerTick();
 
-        private bool TimerTick()
-        {
-            VisualTick();
-            fromSecender = 60000 / Bpm;
-            if (on_or_off_vibration_button)
-            {
-                VibroTick();
-            }
-            if (on_or_off_sound_button)
-            {
-                if (start_or_stop_metronome_button)
-                {
-                    SoundTick();
-                }
-            }
-            if (start_or_stop_metronome_button) _ = MetronomeTimerAsync();
-            return start_or_stop_metronome_button;
-        }
+        //    });
 
-        private async void VisualTick()
-        {
-            await Task.Run(() =>
-            {
-                if (start_or_stop_metronome_button)
-                {
-                    if (sheare == 0) RoundIconOne = Icons.GreenRoundIcon;
-                    else RoundIconOne = Icons.GrayRoundIcon;
-                    if (sheare == 1) RoundIconTwo = Icons.BlueRoundIcon;
-                    else RoundIconTwo = Icons.GrayRoundIcon;
-                    if (sheare == 2) RoundIconThree = Icons.GreenRoundIcon;
-                    else RoundIconThree = Icons.GrayRoundIcon;
-                    if (sheare == 3) RoundIconFour = Icons.BlueRoundIcon;
-                    else RoundIconFour = Icons.GrayRoundIcon;
-                    sheare++;
-                    if (sheare == 4) sheare = 0;
-                }
-                else
-                {
-                    RoundIconOne = Icons.GrayRoundIcon;
-                    RoundIconTwo = Icons.GrayRoundIcon;
-                    RoundIconThree = Icons.GrayRoundIcon;
-                    RoundIconFour = Icons.GrayRoundIcon;
-                }
-            });  
-        }
+        //}
 
-        private async void SoundTick()
-        {
-            await Task.Run(() =>
-            {
-                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                player.Load("tic_2_sound.mp3");
-                player.Play();
-            });
-        }
+        //private bool TimerTick()
+        //{
+        //    VisualTick();
+        //    fromSecender = 60000 / Bpm;
+        //    if (VibroOn)
+        //    {
+        //        VibroTick();
+        //    }
+        //    if (SoundOn)
+        //    {
+        //        if (StartOn)
+        //        {
+        //            SoundTick();
+        //        }
+        //    }
+        //    if (StartOn) _ = MetronomeTimerAsync();
+        //    return StartOn;
+        //}
 
-        private async void VibroTick()
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    if (start_or_stop_metronome_button)
-                    {
-                        Vibration.Cancel();
-                        var duration2 = TimeSpan.FromMilliseconds(250);
-                        Vibration.Vibrate(duration2);
-                    }
-                }
-                catch (FeatureNotSupportedException)
-                {
-                    TextStartAndStopMetronomeButton = "function does not work";
-                }
-                catch (Exception)
-                {
-                    TextStartAndStopMetronomeButton = "error";
-                }
-            });
-        }
+        //private async void VisualTick()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        if (StartOn)
+        //        {
+        //            if (sheare == 0) RoundIconOne = Icons.GreenRoundIcon;
+        //            else RoundIconOne = Icons.GrayRoundIcon;
+        //            if (sheare == 1) RoundIconTwo = Icons.BlueRoundIcon;
+        //            else RoundIconTwo = Icons.GrayRoundIcon;
+        //            if (sheare == 2) RoundIconThree = Icons.GreenRoundIcon;
+        //            else RoundIconThree = Icons.GrayRoundIcon;
+        //            if (sheare == 3) RoundIconFour = Icons.BlueRoundIcon;
+        //            else RoundIconFour = Icons.GrayRoundIcon;
+        //            sheare++;
+        //            if (sheare == 4) sheare = 0;
+        //        }
+        //        else
+        //        {
+        //            RoundIconOne = Icons.GrayRoundIcon;
+        //            RoundIconTwo = Icons.GrayRoundIcon;
+        //            RoundIconThree = Icons.GrayRoundIcon;
+        //            RoundIconFour = Icons.GrayRoundIcon;
+        //        }
+        //    });  
+        //}
+
+        //private async void SoundTick()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+        //        player.Load("tic_2_sound.mp3");
+        //        player.Play();
+        //    });
+        //}
+
+        //private async void VibroTick()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        try
+        //        {
+        //            if (StartOn)
+        //            {
+        //                Vibration.Cancel();
+        //                var duration2 = TimeSpan.FromMilliseconds(250);
+        //                Vibration.Vibrate(duration2);
+        //            }
+        //        }
+        //        catch (FeatureNotSupportedException)
+        //        {
+        //            TextStartAndStopMetronomeButton = "function does not work";
+        //        }
+        //        catch (Exception)
+        //        {
+        //            TextStartAndStopMetronomeButton = "error";
+        //        }
+        //    });
+        //}
     }
 }
