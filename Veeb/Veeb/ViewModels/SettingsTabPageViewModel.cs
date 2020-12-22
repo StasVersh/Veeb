@@ -1,16 +1,24 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Prism.Navigation;
 
 namespace Veeb.ViewModels
 {
     public class SettingsTabPageViewModel : BindableBase
     {
-        public SettingsTabPageViewModel()
-        {
+        private readonly INavigationService _navigationService;
+        public DelegateCommand toMetronomeSettingsCommand { get; set; }
 
+        public SettingsTabPageViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+
+            toMetronomeSettingsCommand = new DelegateCommand(toMetronomeSettings); ;
         }
-    }
-}
+
+        private async void toMetronomeSettings()
+        {
+            await _navigationService.NavigateAsync("MetronomeSettings");
+        }
+    } 
+} 

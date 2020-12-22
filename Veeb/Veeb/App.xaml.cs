@@ -31,6 +31,7 @@ namespace Veeb
             containerRegistry.RegisterForNavigation<MainTabbedPage, MainTabbedPageViewModel>();
             containerRegistry.RegisterForNavigation<MetronomTabPage, MetronomTabPageViewModel>();
             containerRegistry.RegisterForNavigation<SettingsTabPage, SettingsTabPageViewModel>();
+            containerRegistry.RegisterForNavigation<MetronomeSettings, MetronomeSettingsViewModel>();
         }
     }
 }

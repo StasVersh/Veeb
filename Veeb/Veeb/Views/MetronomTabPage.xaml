@@ -28,24 +28,29 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding RoundIconOne}"
+                <Image Source="gray_round_icon.png"
                        Grid.Column="0"
                        Margin="15"/>
-                <Image Source="{Binding RoundIconTwo}"
+                <Image Source="gray_round_icon.png"
                        Grid.Column="1"
                        Margin="15"/>
-                <Image Source="{Binding RoundIconThree}"
+                <Image Source="gray_round_icon.png"
                        Grid.Column="2"
                        Margin="15"/>
-                <Image Source="{Binding RoundIconFour}"
+                <Image Source="gray_round_icon.png"
                        Grid.Column="3"
                        Margin="15"/>
             </Grid>
-            <Label Text="Alegro"
+            <!--<Image Source="blue_round_icon.png"
+                   x:Name="image"/>-->
+            <Grid HeightRequest="50">
+                <Label Text="{Binding TempoText}"
                    HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center"
                    FontSize="20"
-                   TextColor="{x:Static resources:Colors.TextColor}"
-                   WidthRequest="50"/>
+                   TextColor="{x:Static resources:Colors.TextColor}"/>
+            </Grid>
             <Grid HeightRequest="70">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -63,7 +68,6 @@
                        Margin="25,0,25,0"
                        HorizontalTextAlignment="Center"
                        ReturnCommand="{Binding EntryReturnCommand}"
-                       Unfocused="OnUnfocused"
                        Text="{Binding BpmTextEntry}"
                        TextColor="{x:Static resources:Colors.Passive}"
                        FontSize="40"

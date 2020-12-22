@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Veeb.Views.MetronomeSettings"
+             BackgroundColor="#ffffff">
+
+    <NavigationPage.TitleView>
+        <Label Text="Metronome Settings" TextColor="#6e93d6" FontSize="Title" FontAttributes="Bold" Grid.Column="1"/>
+    </NavigationPage.TitleView>
+
+</ContentPage>

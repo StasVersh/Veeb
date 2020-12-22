@@ -5,7 +5,7 @@
             xmlns:local="clr-namespace:Veeb.Views"
             prism:ViewModelLocator.AutowireViewModel="True"
             x:Class="Veeb.Views.MainTabbedPage"
-            BarBackgroundColor="#e4dbd9"
+            BarBackgroundColor="#ffffff"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
             android:TabbedPage.ToolbarPlacement="Bottom"
             android:TabbedPage.BarItemColor="#2f4c58"

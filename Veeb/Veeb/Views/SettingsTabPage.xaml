@@ -3,28 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
+              xmlns:resources="clr-namespace:Veeb.Resources;assembly=Veeb"
              x:Class="Veeb.Views.SettingsTabPage"
-             BackgroundColor="#e4dbd9"
+             BackgroundColor="#ffffff"
              IconImageSource="settings_icon.png"
              Title="Settings">
 
-    <TableView>
+    <TableView Intent="Menu">
         <TableView.Root>
             <TableRoot>
                 <TableSection>
+                    <ImageCell Text="Metronome settings"
+                               TextColor="{x:Static resources:Colors.TextColor}"
+                               Command="{Binding toMetronomeSettingsCommand}"
+                               ImageSource="metronom_icon_28dp.png"/>
                     <ViewCell>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="Sounds" FontSize="Medium" Padding="10" Grid.Column="0"/>
-                            <Picker Grid.Column="1" Title="Sounds" TextColor="#2f4c58" BackgroundColor="#e4dbd9" TitleColor="#6e93d6">
-                                <Picker.Items>
-                                    <x:String>Defolt</x:String>
-                                    <x:String>Stiks</x:String>
-                                </Picker.Items>
-                            </Picker>
+                            <Grid Grid.Column="0" Padding="6">
+                                <Image Source="metronom_icon.png"/>
+                            </Grid>
+                            <Label Text="Metronome settings"
+                                   TextColor="{x:Static resources:Colors.TextColor}"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+                    </ViewCell>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Padding="6">
+                                <Image Source="settings_icon.png"/>
+                            </Grid>
+                            <Label Text="Help"
+                                   TextColor="{x:Static resources:Colors.TextColor}"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"/>
                         </Grid>
                     </ViewCell>
                 </TableSection>

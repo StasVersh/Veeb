@@ -14,13 +14,16 @@ namespace Veeb.Models
         private bool SoundButtOn;
         private bool VibroButtOn;
         private bool TimerOn = false;
+        private Settings settings;
         private ISimpleAudioPlayer player;
+
+        public string SoundSelect { get; set; }
 
         public void Play()
         {
             GC.Collect();
             player = CrossSimpleAudioPlayer.Current;
-            player.Load("tic_1_sound.mp3");
+            player.Load("tic_2_sound.mp3");
             TimerOn = true;
             Task.Run(async () => await Timer().ConfigureAwait(false))
                     .ContinueWith(x => Stop()).ConfigureAwait(false);

@@ -9,7 +9,6 @@ using Veeb.Models;
 using Veeb.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Color = System.Drawing.Color;
 
 namespace Veeb.ViewModels
 {
@@ -23,7 +22,8 @@ namespace Veeb.ViewModels
         private bool VibroOn = false;
         private bool UpdateOn = false;
         private bool startAndStopTapingTempo = false;
-        public Metronome metronome;
+        private Metronome metronome;
+        private Settings settings;
         //private bool OnOrOffButtonTapingTempo = false;
         private int sheare = 0;
         //private State state;
@@ -50,6 +50,24 @@ namespace Veeb.ViewModels
             {
                 SetProperty(ref bpm, value);
                 RaisePropertyChanged(nameof(BpmTextEntry));
+                if (bpm <= 52) TempoText = "Largo";
+                if (bpm > 52 & bpm <= 56) TempoText = "Adagio"; 
+                if (bpm > 56 & bpm <= 72) TempoText = "Andante"; 
+                if (bpm > 72 & bpm <= 92) TempoText = "Andantino"; 
+                if (bpm > 92 & bpm <= 108) TempoText = "Allegretto"; 
+                if (bpm > 108 & bpm <= 144) TempoText = "Allegro"; 
+                if (bpm > 144 & bpm <= 176) TempoText = "Vivo"; 
+                if (bpm > 176) TempoText = "Presto"; 
+            }
+        }
+
+        private string tempo_text;
+        public string TempoText
+        {
+            get => tempo_text;
+            set
+            {
+                SetProperty(ref tempo_text, value);
             }
         }
 
@@ -101,30 +119,7 @@ namespace Veeb.ViewModels
         #endregion
 
         #region Icons
-        private string _roundIconOne = Icons.GrayRoundIcon;
-        public string RoundIconOne
-        {
-            get => _roundIconOne;
-            set => SetProperty(ref _roundIconOne, value);
-        }
-        private string _roundIconTwo = Icons.GrayRoundIcon;
-        public string RoundIconTwo
-        {
-            get => _roundIconTwo;
-            set => SetProperty(ref _roundIconTwo, value);
-        }
-        private string _roundIconThree = Icons.GrayRoundIcon;
-        public string RoundIconThree
-        {
-            get => _roundIconThree;
-            set => SetProperty(ref _roundIconThree, value);
-        }
-        private string _roundIconFour = Icons.GrayRoundIcon;
-        public string RoundIconFour
-        {
-            get => _roundIconFour;
-            set => SetProperty(ref _roundIconFour, value);
-        }
+
         private string _startAndStopMetronomeButtonIcon = Icons.PlayIcon;
 
         public string StartAndStopMetronomeButtonIcon
@@ -132,6 +127,15 @@ namespace Veeb.ViewModels
             get => _startAndStopMetronomeButtonIcon;
             set => SetProperty(ref _startAndStopMetronomeButtonIcon, value);
         }
+
+        private int icon_x;
+
+        public int IconX
+        {
+            get => icon_x;
+            set => SetProperty(ref icon_x, value);
+        }
+
         #endregion
 
         public ICommand MinusOneBpmBatton { get; }
@@ -140,9 +144,6 @@ namespace Veeb.ViewModels
         public ICommand OnAndOffSoundButton { get; }
         public ICommand OnAndOffVibrationButton { get; }
         public ICommand EntryReturnCommand { get; }
-        public ICommand TapingTempoButton { get; }
-
-
 
         public MetronomTabPageViewModel()
         {
@@ -152,8 +153,8 @@ namespace Veeb.ViewModels
             OnAndOffSoundButton = new DelegateCommand(onAndOffSoundButton);
             OnAndOffVibrationButton = new DelegateCommand(onAndOffVibrationButton);
             EntryReturnCommand = new DelegateCommand(entryReturnCommand);
-            //TapingTempoButton = new DelegateCommand(tapingTempoButton);
             metronome = new Metronome();
+            settings = new Settings();
         }
         private void minusOneBpmBatton() { if(Bpm > 10) Bpm--; }
         private void plusOneBpmButton() { if (Bpm < 300) Bpm++; }
@@ -226,118 +227,10 @@ namespace Veeb.ViewModels
                 {
                     FromSecender = 60000 / Bpm;
                     if (metronome != null) metronome.Update(FromSecender, SoundOn, VibroOn);
+                    settings.FromeSecender = FromSecender;
                     await Task.Delay(250).ConfigureAwait(false);
-
                 });
             }
         }
-
-        //private void tapingTempoButton()
-        //{
-        //    if(!startAndStopTapingTempo)
-        //    {
-
-        //    }
-        //    //else
-        //    //{
-        //    //    stopWatch.Stop();
-        //    //    timeSpan = stopWatch.Elapsed;
-        //    //    fromSecender = timeSpan.TotalSeconds;
-        //    //    Bpm = 60 / fromSecender;
-        //    //    stopWatch.Reset();
-        //    //    startAndStopTapingTempo = false;
-        //    //}
-        //}
-
-        //private async Task MetronomeTimerAsync()
-        //{
-        //    await Task.Run(async () =>
-        //    {
-        //        await Task.Delay((int)fromSecender).ConfigureAwait(false);
-        //        TimerTick();
-
-        //    });
-
-        //}
-
-        //private bool TimerTick()
-        //{
-        //    VisualTick();
-        //    fromSecender = 60000 / Bpm;
-        //    if (VibroOn)
-        //    {
-        //        VibroTick();
-        //    }
-        //    if (SoundOn)
-        //    {
-        //        if (StartOn)
-        //        {
-        //            SoundTick();
-        //        }
-        //    }
-        //    if (StartOn) _ = MetronomeTimerAsync();
-        //    return StartOn;
-        //}
-
-        //private async void VisualTick()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        if (StartOn)
-        //        {
-        //            if (sheare == 0) RoundIconOne = Icons.GreenRoundIcon;
-        //            else RoundIconOne = Icons.GrayRoundIcon;
-        //            if (sheare == 1) RoundIconTwo = Icons.BlueRoundIcon;
-        //            else RoundIconTwo = Icons.GrayRoundIcon;
-        //            if (sheare == 2) RoundIconThree = Icons.GreenRoundIcon;
-        //            else RoundIconThree = Icons.GrayRoundIcon;
-        //            if (sheare == 3) RoundIconFour = Icons.BlueRoundIcon;
-        //            else RoundIconFour = Icons.GrayRoundIcon;
-        //            sheare++;
-        //            if (sheare == 4) sheare = 0;
-        //        }
-        //        else
-        //        {
-        //            RoundIconOne = Icons.GrayRoundIcon;
-        //            RoundIconTwo = Icons.GrayRoundIcon;
-        //            RoundIconThree = Icons.GrayRoundIcon;
-        //            RoundIconFour = Icons.GrayRoundIcon;
-        //        }
-        //    });  
-        //}
-
-        //private async void SoundTick()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-        //        player.Load("tic_2_sound.mp3");
-        //        player.Play();
-        //    });
-        //}
-
-        //private async void VibroTick()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        try
-        //        {
-        //            if (StartOn)
-        //            {
-        //                Vibration.Cancel();
-        //                var duration2 = TimeSpan.FromMilliseconds(250);
-        //                Vibration.Vibrate(duration2);
-        //            }
-        //        }
-        //        catch (FeatureNotSupportedException)
-        //        {
-        //            TextStartAndStopMetronomeButton = "function does not work";
-        //        }
-        //        catch (Exception)
-        //        {
-        //            TextStartAndStopMetronomeButton = "error";
-        //        }
-        //    });
-        //}
     }
 }
