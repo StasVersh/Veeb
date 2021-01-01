@@ -17,40 +17,6 @@
                                TextColor="{x:Static resources:Colors.TextColor}"
                                Command="{Binding toMetronomeSettingsCommand}"
                                ImageSource="metronom_icon_28dp.png"/>
-                    <ViewCell>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0" Padding="6">
-                                <Image Source="metronom_icon.png"/>
-                            </Grid>
-                            <Label Text="Metronome settings"
-                                   TextColor="{x:Static resources:Colors.TextColor}"
-                                   FontSize="Medium"
-                                   FontAttributes="Bold"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"/>
-                        </Grid>
-                    </ViewCell>
-                    <ViewCell>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0" Padding="6">
-                                <Image Source="settings_icon.png"/>
-                            </Grid>
-                            <Label Text="Help"
-                                   TextColor="{x:Static resources:Colors.TextColor}"
-                                   FontSize="Medium"
-                                   FontAttributes="Bold"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"/>
-                        </Grid>
-                    </ViewCell>
                 </TableSection>
             </TableRoot>
         </TableView.Root>

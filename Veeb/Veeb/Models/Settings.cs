@@ -8,5 +8,7 @@ namespace Veeb.Models
     {
         public string SoundSelect { get; set; }
         public double FromeSecender { get; set; }
+        public int UpBoundaries { get; set; }
+        public int SoundVolume { get; set; }
     }
 }

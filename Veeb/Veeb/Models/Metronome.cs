@@ -14,7 +14,6 @@ namespace Veeb.Models
         private bool SoundButtOn;
         private bool VibroButtOn;
         private bool TimerOn = false;
-        private Settings settings;
         private ISimpleAudioPlayer player;
 
         public string SoundSelect { get; set; }

@@ -1,13 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Veeb.Models;
 using Veeb.Resources;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Veeb.ViewModels
@@ -21,13 +17,7 @@ namespace Veeb.ViewModels
         private bool SoundOn = false;
         private bool VibroOn = false;
         private bool UpdateOn = false;
-        private bool startAndStopTapingTempo = false;
         private Metronome metronome;
-        private Settings settings;
-        //private bool OnOrOffButtonTapingTempo = false;
-        private int sheare = 0;
-        //private State state;
-        //Stopwatch stopWatch = new Stopwatch();
         #endregion
 
         #region Strings
@@ -68,6 +58,24 @@ namespace Veeb.ViewModels
             set
             {
                 SetProperty(ref tempo_text, value);
+            }
+        }
+
+        private double bpm_slider;
+        public double BpmSlider
+        {
+            get
+            {
+                if(BpmSlider > 10)
+                {
+                    Bpm = BpmSlider;
+                    bpm_slider = BpmSlider;
+                }
+                return BpmSlider;
+            }
+            set
+            {
+                SetProperty(ref bpm_slider, value);
             }
         }
 
@@ -154,7 +162,6 @@ namespace Veeb.ViewModels
             OnAndOffVibrationButton = new DelegateCommand(onAndOffVibrationButton);
             EntryReturnCommand = new DelegateCommand(entryReturnCommand);
             metronome = new Metronome();
-            settings = new Settings();
         }
         private void minusOneBpmBatton() { if(Bpm > 10) Bpm--; }
         private void plusOneBpmButton() { if (Bpm < 300) Bpm++; }
@@ -227,7 +234,6 @@ namespace Veeb.ViewModels
                 {
                     FromSecender = 60000 / Bpm;
                     if (metronome != null) metronome.Update(FromSecender, SoundOn, VibroOn);
-                    settings.FromeSecender = FromSecender;
                     await Task.Delay(250).ConfigureAwait(false);
                 });
             }
